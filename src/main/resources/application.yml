@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: todo
+
+#  datasource:
+#    username: admin
+#    password:
+#    url: jdbc:h2:file:./db
+#    driver-class-name: org.h2.Driver
+
+  profiles:
+    active:
+
+  sql:
+    init:
+      mode: never
+
+  h2:
+    console:
+      enabled: true
+
+#server.port=7070
+
+

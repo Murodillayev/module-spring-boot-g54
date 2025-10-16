@@ -1,7 +1,7 @@
 package uz.pdp.todo.dao;
 
 
-import uz.pdp.todo.Todo;
+import uz.pdp.todo.model.Todo;
 
 import java.util.List;
 import java.util.Optional;

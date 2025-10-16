@@ -3,7 +3,7 @@ package uz.pdp.todo.dao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import uz.pdp.todo.Todo;
+import uz.pdp.todo.model.Todo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,8 +30,12 @@ public class TodoDaoImpl implements TodoDao {
         String sql = "select * from todo where id = ?";
 
 //        jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Todo.class), id);
-        jdbcTemplate.queryForObject(sql, new TodoRowMapper(), id);
-        return Optional.empty();
+        try {
+            Todo todo = jdbcTemplate.queryForObject(sql, new TodoRowMapper(), id);
+            return Optional.ofNullable(todo);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     @Override

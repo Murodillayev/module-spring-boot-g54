@@ -9,4 +9,9 @@ spring:
     driver-class-name: org.h2.Driver
 
 
+  jpa:
+    show-sql: true
+
+
+
 

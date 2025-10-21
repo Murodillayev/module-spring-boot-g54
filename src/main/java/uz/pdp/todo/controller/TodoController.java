@@ -4,7 +4,6 @@ package uz.pdp.todo.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.todo.exception.NotFoundException;
-import uz.pdp.todo.dao.TodoDao;
 import uz.pdp.todo.model.Todo;
 import uz.pdp.todo.model.dto.TodoDto;
 import uz.pdp.todo.repository.TodoRepository;

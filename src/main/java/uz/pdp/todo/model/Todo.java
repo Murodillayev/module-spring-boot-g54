@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Todo {
     @Id
     private String id;

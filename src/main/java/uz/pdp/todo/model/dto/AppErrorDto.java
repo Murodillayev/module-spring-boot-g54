@@ -1,8 +1,7 @@
-package uz.pdp.todo;
+package uz.pdp.todo.model.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.relational.core.sql.In;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package uz.pdp.todo;
+package uz.pdp.todo.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -9,12 +9,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.todo.exception.NotFoundException;
+import uz.pdp.todo.model.AuthUser;
 import uz.pdp.todo.model.Todo;
 import uz.pdp.todo.model.dto.DataResponse;
 import uz.pdp.todo.model.dto.TodoDto;
 import uz.pdp.todo.repository.TodoIdTitleDto;
 import uz.pdp.todo.repository.TodoIdTitleDtoClass;
 import uz.pdp.todo.repository.TodoRepository;
+import uz.pdp.todo.repository.UserRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TodoController {
     private final TodoRepository repository;
+    private final UserRepository userRepository;
 
     //
     @GetMapping("/{id}")
@@ -47,6 +50,7 @@ public class TodoController {
                 .and(Sort.by(Sort.Direction.DESC, "description"));
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         Page<Todo> byPage = repository.findAll(pageable);
+
         return new DataResponse<>(byPage.getContent(), byPage.getTotalElements(), byPage.getTotalPages());
 
     }
@@ -86,12 +90,18 @@ public class TodoController {
 
     @PostMapping
     public Todo create(@RequestBody TodoDto dto) {
+
+        AuthUser authUser = userRepository.findById(dto.getUserId()).orElseThrow();
+        authUser.setPassword("dsadasdsadsa");
+//        userRepository.save(authUser);
         Todo todo = Todo.builder()
                 .title(dto.getTitle())
                 .description(dto.getDescription())
                 .completed(false)
+                .user(authUser)
                 .id(UUID.randomUUID().toString())
                 .build();
+
         return repository.save(todo);
     }
 

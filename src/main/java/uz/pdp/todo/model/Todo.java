@@ -1,9 +1,8 @@
 package uz.pdp.todo.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PostRemove;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,11 +13,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Builder
+@ToString
 public class Todo {
     @Id
     private String id;
     private String title;
     private String description;
     private boolean completed;
-//    private LocalDateTime createdAt; // created_at
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private AuthUser user;
+
 }

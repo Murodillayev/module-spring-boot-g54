@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TodoDto {
-    private String title;
-    private String description;
-    private String userId;
+public class AuthUserSaveDto {
+    private String username;
+    private String password;
+
 }

@@ -1,16 +1,9 @@
 spring:
-  application:
-    name: todo
-  security:
-    user:
-      name: admin
-      password: 123
-
   datasource:
-    username: admin
-    password:
-    url: jdbc:h2:file:./db
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: macbookpro
+    password: 19801980
+    driver-class-name: org.postgresql.Driver
 
 
 

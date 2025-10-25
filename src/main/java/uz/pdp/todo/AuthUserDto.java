@@ -1,20 +1,18 @@
 package uz.pdp.todo;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-public class AuthUser {
-    @Id
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class AuthUserDto {
     private String id;
     private String username;
-    private String password;
     private String role;
     private Boolean blocked;
 }

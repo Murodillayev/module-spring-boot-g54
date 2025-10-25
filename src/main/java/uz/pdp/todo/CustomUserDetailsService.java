@@ -1,14 +1,10 @@
 package uz.pdp.todo;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                 () -> new UsernameNotFoundException(username)
         );
 
-        return User.builder()
+        return CustomUserDetails.builder()
                 .password(authUser.getPassword())
-                .authorities(Collections.emptyList())
+                .role(authUser.getRole())
+                .userId(authUser.getId())
+                .blocked(authUser.getBlocked())
                 .username(authUser.getUsername())
                 .build();
     }

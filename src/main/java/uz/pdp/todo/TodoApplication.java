@@ -22,9 +22,10 @@ public class TodoApplication {
             AuthUser authUser = new AuthUser();
             authUser.setId(UUID.randomUUID().toString());
             authUser.setUsername("admin");
+            authUser.setRole("ADMIN");
+            authUser.setBlocked(false);
             authUser.setPassword(passwordEncoder.encode("123"));
             authUserRepository.save(authUser);
-
         };
     }
 }

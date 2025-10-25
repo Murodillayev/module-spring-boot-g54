@@ -4,6 +4,10 @@ spring:
     username: macbookpro
     password: 19801980
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 
 
 

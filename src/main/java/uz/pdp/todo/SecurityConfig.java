@@ -22,8 +22,6 @@ import uz.pdp.todo.jwt.JwtFilter;
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
 
     public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
@@ -39,7 +37,6 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
         );
 
-        http.userDetailsService(userDetailsService);
         http.sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );

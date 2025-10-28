@@ -1,10 +1,12 @@
-package uz.pdp.todo;
+package uz.pdp.todo.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import uz.pdp.todo.model.AuthUser;
+import uz.pdp.todo.repository.AuthUserRepository;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,7 @@
-package uz.pdp.todo;
+package uz.pdp.todo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import uz.pdp.todo.model.AuthUser;
 
 import java.util.Optional;
 

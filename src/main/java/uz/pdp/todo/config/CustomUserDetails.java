@@ -1,4 +1,4 @@
-package uz.pdp.todo;
+package uz.pdp.todo.config;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Getter

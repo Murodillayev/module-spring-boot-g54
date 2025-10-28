@@ -1,6 +1,5 @@
-package uz.pdp.todo;
+package uz.pdp.todo.model;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

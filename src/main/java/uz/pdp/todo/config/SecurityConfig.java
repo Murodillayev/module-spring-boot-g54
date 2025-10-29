@@ -1,11 +1,7 @@
 package uz.pdp.todo.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,12 +16,9 @@ import uz.pdp.todo.config.jwt.JwtFilter;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
 
     public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
@@ -36,12 +29,12 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth ->
                 auth.requestMatchers(
-                                "/auth/login"
+                                "/auth/login",
+                                "/auth/refresh-token"
                         ).permitAll()
                         .anyRequest().authenticated()
         );
 
-        http.userDetailsService(userDetailsService);
         http.sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
@@ -56,15 +49,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return new ProviderManager(authProvider);
-    }
 }
 
 

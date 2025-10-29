@@ -1,15 +1,14 @@
 package uz.pdp.todo.service;
 
-import org.springframework.security.authentication.AuthenticationManager;
+import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.todo.config.jwt.JwtUtils;
 import uz.pdp.todo.model.AuthUser;
 import uz.pdp.todo.model.AuthUserDto;
+import uz.pdp.todo.model.LoginResponse;
+import uz.pdp.todo.model.TokenDto;
 import uz.pdp.todo.repository.AuthUserRepository;
 
 import java.util.List;
@@ -20,21 +19,36 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthUserRepository repository;
     private final JwtUtils jwtUtils;
+    private final AuthUserRepository authUserRepository;
 
-    private final AuthenticationManager authenticationManager;
-
-    public AuthService(PasswordEncoder passwordEncoder, AuthUserRepository repository, JwtUtils jwtUtils, AuthenticationManager authenticationManager) {
+    public AuthService(PasswordEncoder passwordEncoder, AuthUserRepository repository, JwtUtils jwtUtils, AuthUserRepository authUserRepository) {
         this.passwordEncoder = passwordEncoder;
         this.repository = repository;
         this.jwtUtils = jwtUtils;
-        this.authenticationManager = authenticationManager;
+        this.authUserRepository = authUserRepository;
     }
 
-    public String login(String username, String password) {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
-        authenticationManager.authenticate(authentication);
-        Map<String, Object> claims = Map.of("name", "Muhammadkomil");
-        return jwtUtils.generateAccessToken(username, claims);
+
+    public LoginResponse login(String username, String password) {
+
+        AuthUser authUser = authUserRepository.findByUsername(username).orElseThrow(
+                () -> new BadCredentialsException("Invalid username or password")
+        );
+
+        if (!passwordEncoder.matches(password, authUser.getPassword())) {
+            throw new BadCredentialsException("Invalid password");
+        }
+
+        Map<String, Object> stringObjectMap = jwtUtils.prepareClaims(authUser);
+        TokenDto accessToken = jwtUtils.generateAccessToken(username, stringObjectMap);
+        TokenDto refreshToken = jwtUtils.generateRefreshToken(username, null);
+
+        return LoginResponse.builder()
+                .token(accessToken.getToken())
+                .expiry(accessToken.getExpiry())
+                .refreshToken(refreshToken.getToken())
+                .refreshExpiry(refreshToken.getExpiry())
+                .build();
     }
 
     public List<AuthUserDto> getAll() {
@@ -47,4 +61,22 @@ public class AuthService {
                 .blocked(u.getBlocked())
                 .build()).toList();
     }
+
+    public LoginResponse refreshToken(String refreshToken) {
+        Claims claims = jwtUtils.extractClaims(refreshToken);
+        String username = claims.getSubject();
+        AuthUser authUser = authUserRepository.findByUsername(username).orElseThrow(
+                () -> new BadCredentialsException("Invalid refresh token")
+        );
+        TokenDto access = jwtUtils.generateAccessToken(username, jwtUtils.prepareClaims(authUser));
+        TokenDto refresh = jwtUtils.generateRefreshToken(username, null);
+        return LoginResponse.builder()
+                .token(access.getToken())
+                .expiry(access.getExpiry())
+                .refreshExpiry(refresh.getExpiry())
+                .refreshToken(refresh.getToken())
+                .build();
+    }
+
+
 }

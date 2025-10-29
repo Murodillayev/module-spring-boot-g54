@@ -1,13 +1,12 @@
 package uz.pdp.todo.config.jwt;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,13 +14,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import uz.pdp.todo.config.CustomUserDetails;
 import uz.pdp.todo.model.AuthUser;
 import uz.pdp.todo.repository.AuthUserRepository;
-import uz.pdp.todo.config.CustomUserDetails;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 
 //client ->  [   sf1 -> sf2  -> customfilter(Authentification->isAuth=true, contexHolder)
 // -> upF (Authentification => isAuthenticate()=false) -> sf3 -> sf4 ....  -> isAuthenticate()=true ] -> controller
@@ -38,19 +35,16 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
     private final AuthUserRepository authUserRepository;
 
+    @Value("${application.sync-db:true}")
+    private Boolean syncDb;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.replace("Bearer ", "");
-
             Claims claims = jwtUtils.extractClaims(token);
-
-            String username = claims.getSubject();
-
-            AuthUser authUser = authUserRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
-
-            CustomUserDetails customUserDetails = CustomUserDetails.builder().userId(authUser.getId()).username(username).password(authUser.getPassword()).build();
+            CustomUserDetails customUserDetails = prepareUserDetails(claims);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             SecurityContext context = SecurityContextHolder.getContext();
@@ -60,5 +54,37 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    private CustomUserDetails prepareUserDetails(Claims claims) {
+        String username = claims.getSubject();
+        Boolean blocked;
+        String role;
+        String userId;
 
+        if (syncDb) {
+            AuthUser authUser = authUserRepository.findByUsername(username).orElseThrow(
+                    () -> new UsernameNotFoundException(username)
+            );
+            role = authUser.getRole();
+            userId = authUser.getId();
+            blocked = authUser.getBlocked();
+
+        } else {
+
+            role = claims.get("role", String.class);
+            userId = claims.get("userId", String.class);
+            blocked = claims.get("blocked", Boolean.class);
+        }
+
+        return CustomUserDetails.builder()
+                .userId(userId)
+                .password(null)
+                .role(role)
+                .blocked(blocked)
+                .username(username)
+                .build();
+    }
 }
+
+// token ->  (username)loadFromDb -> user -> sessionUser
+// token  -> user -> sessionUser
+

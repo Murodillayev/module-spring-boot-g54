@@ -7,10 +7,19 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
+  jackson:
+    time-zone: Asia/Tashkent
 
 
+app-security:
+  token:
+    access-exp: 180000
+    refresh-exp: 86400000
+    secret: bu_secret_key_uzunligi_kamida_32_byte_boliswqewqewqewq
 
-
+application:
+  sync-db: true
 
 
 

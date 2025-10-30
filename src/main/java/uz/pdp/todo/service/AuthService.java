@@ -5,10 +5,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.todo.config.jwt.JwtUtils;
-import uz.pdp.todo.model.AuthUser;
-import uz.pdp.todo.model.AuthUserDto;
-import uz.pdp.todo.model.LoginResponse;
-import uz.pdp.todo.model.TokenDto;
+import uz.pdp.todo.model.entity.AuthUser;
+import uz.pdp.todo.model.dto.AuthUserDto;
+import uz.pdp.todo.model.dto.LoginResponse;
+import uz.pdp.todo.model.dto.TokenDto;
 import uz.pdp.todo.repository.AuthUserRepository;
 
 import java.util.List;
@@ -57,8 +57,6 @@ public class AuthService {
         return users.stream().map(u -> AuthUserDto.builder()
                 .id(u.getId())
                 .username(u.getUsername())
-                .role(u.getRole())
-                .blocked(u.getBlocked())
                 .build()).toList();
     }
 

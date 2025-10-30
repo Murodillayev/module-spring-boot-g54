@@ -1,4 +1,4 @@
-package uz.pdp.todo.model;
+package uz.pdp.todo.model.dto;
 
 import lombok.*;
 

@@ -30,7 +30,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth ->
                 auth.requestMatchers(
                                 "/auth/login",
-                                "/auth/refresh-token"
+                                "/auth/refresh-token",
+                                "/**"
                         ).permitAll()
                         .anyRequest().authenticated()
         );

@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uz.pdp.todo.config.CustomUserDetails;
-import uz.pdp.todo.model.AuthUser;
+import uz.pdp.todo.model.entity.AuthUser;
 import uz.pdp.todo.repository.AuthUserRepository;
 
 import java.io.IOException;
@@ -64,9 +64,7 @@ public class JwtFilter extends OncePerRequestFilter {
             AuthUser authUser = authUserRepository.findByUsername(username).orElseThrow(
                     () -> new UsernameNotFoundException(username)
             );
-            role = authUser.getRole();
             userId = authUser.getId();
-            blocked = authUser.getBlocked();
 
         } else {
 
@@ -75,13 +73,7 @@ public class JwtFilter extends OncePerRequestFilter {
             blocked = claims.get("blocked", Boolean.class);
         }
 
-        return CustomUserDetails.builder()
-                .userId(userId)
-                .password(null)
-                .role(role)
-                .blocked(blocked)
-                .username(username)
-                .build();
+        return null;
     }
 }
 

@@ -1,4 +1,4 @@
-package uz.pdp.todo.model;
+package uz.pdp.todo.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class AuthUserDto {
+@NoArgsConstructor
+public class IdNameDto {
     private String id;
-    private String username;
-    private String role;
-    private Boolean blocked;
+    private String name;
 }

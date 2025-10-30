@@ -5,8 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uz.pdp.todo.model.AuthUser;
-import uz.pdp.todo.model.TokenDto;
+import uz.pdp.todo.model.entity.AuthUser;
+import uz.pdp.todo.model.dto.TokenDto;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -70,9 +70,10 @@ public class JwtUtils {
     public Map<String, Object> prepareClaims(AuthUser authUser) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", authUser.getId());
-        claims.put("blocked", authUser.getBlocked());
-        claims.put("role", authUser.getRole());
         return claims;
     }
+
+
+    // springdoc
 
 }

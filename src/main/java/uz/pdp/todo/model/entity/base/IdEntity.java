@@ -11,7 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Setter
 @Getter
-@Builder
 @MappedSuperclass
 public class IdEntity {
 

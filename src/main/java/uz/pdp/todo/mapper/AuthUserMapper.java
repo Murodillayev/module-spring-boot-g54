@@ -27,7 +27,7 @@ public class AuthUserMapper {
         authUser.setUsername(dto.getUsername());
         authUser.setPassword(passwordEncoder.encode(dto.getPassword()));
         authUser.setName(dto.getName());
-        authUser.setPhone(dto.getPhone());
+        authUser.setPhone(dto.getUserPhone());
         authUser.setRole(role);
         return authUser;
     }

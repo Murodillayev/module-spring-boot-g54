@@ -1,6 +1,8 @@
 package uz.pdp.todo.service;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
+import uz.pdp.todo.mapper.AuthUserMapperNew;
 import uz.pdp.todo.model.entity.AuthUser;
 import uz.pdp.todo.mapper.AuthUserMapper;
 import uz.pdp.todo.model.dto.AuthUserDto;
@@ -19,14 +21,18 @@ public class UserService
         AuthUserValidator>
         implements CRUDService<AuthUserDto, AuthUserCreateDto, AuthUserUpdateDto, String> {
 
+
+    private final AuthUserMapperNew authUserMapperNew;
+
     public UserService(AuthUserRepository repository, AuthUserMapper mapper, AuthUserValidator validator) {
         super(repository, mapper, validator);
+        this.authUserMapperNew = Mappers.getMapper(AuthUserMapperNew.class);
     }
 
     @Override
     public AuthUserDto create(AuthUserCreateDto dto) {
         validator.validateOnCreate(dto);
-        AuthUser authUser = mapper.fromDto(dto);
+        AuthUser authUser = authUserMapperNew.fromDto(dto);
         return mapper.toDto(repository.save(authUser));
     }
 

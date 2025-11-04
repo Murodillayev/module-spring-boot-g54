@@ -17,6 +17,6 @@ public class AuthUserCreateDto {
     private String username;
     private String password;
     private String email;
-    private String phone;
+    private String userPhone;
     private String roleId;
 }

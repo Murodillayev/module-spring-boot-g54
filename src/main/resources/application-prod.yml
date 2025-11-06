@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/hub
-    username: macbookpro
-    password: 19801980
-    driver-class-name: org.postgresql.Driver

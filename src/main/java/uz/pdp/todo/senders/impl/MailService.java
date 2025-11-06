@@ -1,26 +1,29 @@
 package uz.pdp.todo.senders.impl;
 
 
+import jakarta.mail.Message;
+import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import uz.pdp.todo.senders.MessageService;
 
 @Service
 @Slf4j
-@Profile("mail")
+@RequiredArgsConstructor
 public class MailService implements MessageService {
 
+    private final JavaMailSender mailSender;
+
     @SneakyThrows
-    @Async
     @Override
     public void sendMessage(String message) {
-        Thread.sleep(4000);
-        log.info("Sending message to MAIL : message => {}", message);
-        System.out.println();
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        mimeMessage.setSubject("Qarz masalasi");
+        mimeMessage.setText("Assalomu alaykum");
+        mimeMessage.setRecipients(Message.RecipientType.TO, "devolmoscrm@gmail.com");
+        mailSender.send(mimeMessage);
     }
-
 }

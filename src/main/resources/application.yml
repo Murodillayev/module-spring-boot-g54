@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/hub
+    url: jdbc:postgresql://localhost:5432/test
     username: macbookpro
     password: 19801980
     driver-class-name: org.postgresql.Driver
@@ -11,15 +11,19 @@ spring:
   jackson:
     time-zone: Asia/Tashkent
 
+  profiles:
+    active: prod,telegram
 
-app-security:
-  token:
-    access-exp: 180000
-    refresh-exp: 86400000
-    secret: bu_secret_key_uzunligi_kamida_32_byte_boliswqewqewqewq
 
-application:
-  sync-db: true
+springdoc:
+  swagger-ui:
+    path: /
+
+
+
+
+
+
 
 
 

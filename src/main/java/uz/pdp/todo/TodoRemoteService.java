@@ -3,17 +3,26 @@ package uz.pdp.todo;
 
 import java.util.List;
 
+
 public interface TodoRemoteService {
 
     List<Todo> getTodos();
 
-    Todo getTodo(Integer id);
-
     Todo createTodo(Todo todo);
 
-    Todo updateTodo(String title, Integer id);
+    default Todo getTodo(Integer id) {
+        return null;
+    }
 
-    Todo completeTodo(Integer id);
+    default Todo updateTodo(String title, Integer id) {
+        return null;
+    }
 
-    void deleteTodo(Integer id);
+    default Todo completeTodo(Integer id) {
+        return null;
+    }
+
+    default void deleteTodo(Integer id) {
+
+    }
 }

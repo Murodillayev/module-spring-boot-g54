@@ -1,5 +1,6 @@
 package uz.pdp.todo;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,17 +13,14 @@ public class HomeController {
     public HomeController(TodoRemoteService todoRemoteService) {
         this.todoRemoteService = todoRemoteService;
     }
-    // HttpClient
-
-    // RestTemplate // deprecated -> spring 6
-
-    // WebClient
-    // FeignClient
-
-
     @GetMapping
     public List<Todo> getAll() {
         return todoRemoteService.getTodos();
+    }
+
+    @GetMapping("/{id}")
+    public Todo get(@PathVariable Integer id) {
+        return todoRemoteService.getTodo(id);
     }
 
     @PostMapping

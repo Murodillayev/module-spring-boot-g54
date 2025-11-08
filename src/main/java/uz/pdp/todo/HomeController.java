@@ -1,28 +1,32 @@
 package uz.pdp.todo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-import uz.pdp.todo.senders.MessageService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/todo")
 public class HomeController {
+    private final TodoRemoteService todoRemoteService;
 
-    private final MessageService mailService;
+    public HomeController(TodoRemoteService todoRemoteService) {
+        this.todoRemoteService = todoRemoteService;
+    }
+    // HttpClient
 
-    @Autowired
-    private HomeService service;
+    // RestTemplate // deprecated -> spring 6
 
-    public HomeController(MessageService mailService) {
-        this.mailService = mailService;
+    // WebClient
+    // FeignClient
+
+
+    @GetMapping
+    public List<Todo> getAll() {
+        return todoRemoteService.getTodos();
     }
 
-    @PostMapping("/send")
-    public String sendMessage() {
-        service.createUser("user data");
-        mailService.sendMessage("You successfully registered");
-        return "Successfully sent";
+    @PostMapping
+    public Todo create(@RequestBody Todo todo) {
+        return todoRemoteService.createTodo(todo);
     }
 }

@@ -1,32 +1,3 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/test
-    username: macbookpro
-    password: 19801980
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-  jackson:
-    time-zone: Asia/Tashkent
-
-  profiles:
-    active: prod,telegram
-
-
-  mail:
-    host: sandbox.smtp.mailtrap.io
-    port: 587
-    username: 15c581ab473b53
-    password: 13b44caa4b1922
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
 springdoc:
   swagger-ui:
     path: /

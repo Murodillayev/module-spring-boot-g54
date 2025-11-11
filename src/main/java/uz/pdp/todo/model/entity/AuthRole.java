@@ -18,11 +18,11 @@ public class AuthRole extends IdEntity {
     private String name;
     private String code;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "auth_role_permission",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    private List<AuthPermission> permissions;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "auth_role_permission",
+//            joinColumns = @JoinColumn(name = "role_id"),
+//            inverseJoinColumns = @JoinColumn(name = "permission_id")
+//    )
+//    private List<AuthPermission> permissions;
 }

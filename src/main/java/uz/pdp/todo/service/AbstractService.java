@@ -1,6 +1,9 @@
 package uz.pdp.todo.service;
 
-public abstract class AbstractService<R, M, V> {
+import uz.pdp.todo.mapper.BaseMapper;
+import uz.pdp.todo.validator.BaseValidator;
+
+public abstract class AbstractService<R, M extends BaseMapper, V extends BaseValidator> {
     protected final R repository;
     protected final M mapper;
     protected final V validator;

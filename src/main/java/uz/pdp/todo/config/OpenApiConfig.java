@@ -35,8 +35,8 @@ import org.springframework.context.annotation.Configuration;
                 )
         },
         security = {
-                @SecurityRequirement(name = "bearerAuth"),
-                @SecurityRequirement(name = "basicAuth")
+                @SecurityRequirement(name = "bearerAuth")
+//                @SecurityRequirement(name = "basicAuth")
         }
 )
 
@@ -48,13 +48,13 @@ import org.springframework.context.annotation.Configuration;
         bearerFormat = "JWT",
         in = SecuritySchemeIn.HEADER
 )
-@SecurityScheme(
-        name = "basicAuth",
-        description = "Basic sc",
-        scheme = "basic",
-        type = SecuritySchemeType.HTTP,
-        in = SecuritySchemeIn.HEADER
-)
+//@SecurityScheme(
+//        name = "basicAuth",
+//        description = "Basic sc",
+//        scheme = "basic",
+//        type = SecuritySchemeType.HTTP,
+//        in = SecuritySchemeIn.HEADER
+//)
 public class OpenApiConfig {
 
 }

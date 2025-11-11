@@ -57,7 +57,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private CustomUserDetails prepareUserDetails(Claims claims) {
         String username = claims.getSubject();
         Boolean blocked;
-        String role;
+        String roleName;
         String userId;
 
         if (syncDb) {
@@ -65,15 +65,18 @@ public class JwtFilter extends OncePerRequestFilter {
                     () -> new UsernameNotFoundException(username)
             );
             userId = authUser.getId();
+            roleName = authUser.getRole().getCode();
 
         } else {
-
-            role = claims.get("role", String.class);
+            roleName = claims.get("role", String.class);
             userId = claims.get("userId", String.class);
-            blocked = claims.get("blocked", Boolean.class);
         }
 
-        return null;
+        return CustomUserDetails.builder()
+                .userId(userId)
+                .username(username)
+                .role(roleName)
+                .build();
     }
 }
 

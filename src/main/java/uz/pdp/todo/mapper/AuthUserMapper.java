@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class AuthUserMapper {
+public class AuthUserMapper implements BaseMapper {
     private final AuthRoleValidator authRoleValidator;
     private final PasswordEncoder passwordEncoder;
 

@@ -7,7 +7,7 @@ import uz.pdp.todo.repository.AuthRoleRepository;
 
 @Component
 @RequiredArgsConstructor
-public class AuthRoleValidator {
+public class AuthRoleValidator implements BaseValidator {
 
     private final AuthRoleRepository repository;
     public AuthRole existsAndGet(String roleId) {

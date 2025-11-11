@@ -9,7 +9,7 @@ import uz.pdp.todo.repository.AuthUserRepository;
 
 @Component
 @RequiredArgsConstructor
-public class AuthUserValidator {
+public class AuthUserValidator implements BaseValidator {
     private final AuthUserRepository repository;
 
     public void validateOnCreate(AuthUserCreateDto dto) {

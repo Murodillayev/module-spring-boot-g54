@@ -21,7 +21,6 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private String role; // admin, user
     private String userId;
-    private boolean blocked;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -37,7 +36,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !this.blocked;
+        return true;
     }
 
 

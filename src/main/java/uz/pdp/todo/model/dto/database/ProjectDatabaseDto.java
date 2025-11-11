@@ -1,0 +1,21 @@
+package uz.pdp.todo.model.dto.database;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserDto;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProjectDatabaseDto {
+    private String id;
+    private String name;
+    private String description;
+
+//    private ProjectAgentDto agent;
+
+    private List<ProjectDatabaseUserDto> members;
+}

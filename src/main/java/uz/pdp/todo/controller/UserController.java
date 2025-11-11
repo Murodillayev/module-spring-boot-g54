@@ -28,43 +28,7 @@ public class UserController {
 
     private final UserService service;
 
-
     @PostMapping
-    @Operation(summary = "Bu api user yaratdi", description = "User yaratishini chaynab tushuntiriladi bu yerda")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Muvaffaqiyatli topildi",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AuthUserDto.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Noto'g'ri so'rov",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AppErrorDto.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Ruxsat etilmagan",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AppErrorDto.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Foydalanuvchi topilmadi",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AppErrorDto.class)
-                    )
-            )
-    })
     public ResponseEntity<AuthUserDto> create(@RequestBody AuthUserCreateDto dto) {
         AuthUserDto authUserDto = service.create(dto);
         return new ResponseEntity<>(authUserDto, HttpStatus.CREATED);

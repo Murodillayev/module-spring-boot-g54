@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectAgentResponseDTO {
+public class ProjectAgentDTO {
     private String id;
     private String name;
     private String databaseUsername;

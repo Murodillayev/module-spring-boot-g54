@@ -1,9 +1,8 @@
 package uz.pdp.todo.mapper;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uz.pdp.todo.model.dto.ProjectAgentCreateDTO;
-import uz.pdp.todo.model.dto.ProjectAgentResponseDTO;
+import uz.pdp.todo.model.dto.ProjectAgentDTO;
 import uz.pdp.todo.model.entity.ProjectAgent;
 
 @Component
@@ -18,7 +17,7 @@ public class ProjectAgentMapper implements BaseMapper {
         return projectAgent;
     }
 
-    public ProjectAgent toEntity(ProjectAgentResponseDTO dto) {
+    public ProjectAgent toEntity(ProjectAgentDTO dto) {
         ProjectAgent projectAgent = new ProjectAgent();
         projectAgent.setId(dto.getId());
         projectAgent.setName(dto.getName());
@@ -28,8 +27,8 @@ public class ProjectAgentMapper implements BaseMapper {
         return projectAgent;
     }
 
-    public ProjectAgentResponseDTO toDto(ProjectAgent projectAgent) {
-        ProjectAgentResponseDTO dto = new ProjectAgentResponseDTO();
+    public ProjectAgentDTO toDto(ProjectAgent projectAgent) {
+        ProjectAgentDTO dto = new ProjectAgentDTO();
         dto.setId(projectAgent.getId());
         dto.setName(projectAgent.getName());
         dto.setDatabaseUsername(projectAgent.getDatabaseUsername());

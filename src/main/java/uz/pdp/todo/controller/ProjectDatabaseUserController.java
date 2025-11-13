@@ -18,7 +18,7 @@ public class ProjectDatabaseUserController {
     private final ProjectDatabaseUserService service;
 
     @PostMapping
-    public ResponseEntity<ProjectDatabaseUserDto> createDatabase(@RequestBody ProjectDatabaseUserCreateDto createDto) {
+    public ResponseEntity<ProjectDatabaseUserDto> create(@RequestBody ProjectDatabaseUserCreateDto createDto) {
         return new ResponseEntity<>(service.create(createDto), HttpStatus.CREATED);
     }
 

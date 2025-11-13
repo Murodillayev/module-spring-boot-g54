@@ -3,7 +3,6 @@ package uz.pdp.todo.model.dto.databaseUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uz.pdp.todo.model.entity.DatabaseRole;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import java.util.List;
 public class ProjectDatabaseUserUpdateDto {
     private String dbUsername;
     private String dbPassword;
-    private String AgentId;
     private String databaseId;
-    private List<DatabaseRole> roles;
+    private List<String> roleIds;
 }

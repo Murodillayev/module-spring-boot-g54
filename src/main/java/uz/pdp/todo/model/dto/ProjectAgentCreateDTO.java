@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ProjectAgentCreateDTO {
     private String name;
     private String databaseUsername;

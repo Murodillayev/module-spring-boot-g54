@@ -3,6 +3,7 @@ package uz.pdp.todo.model.dto.database;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.pdp.todo.model.dto.ProjectAgentDTO;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserDto;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class ProjectDatabaseDto {
     private String name;
     private String description;
 
-//    private ProjectAgentDto agent;
+    private ProjectAgentDTO agent;
 
     private List<ProjectDatabaseUserDto> members;
 }

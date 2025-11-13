@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.pdp.todo.model.entity.DatabaseRole;
 
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -14,5 +15,5 @@ public class ProjectDatabaseUserCreateDto {
     private String dbUsername;
     private String dbPassword;
     private String databaseId;
-    private List<DatabaseRole> roles;
+    private List<String> roleIds = Collections.emptyList();
 }

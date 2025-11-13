@@ -3,7 +3,7 @@ package uz.pdp.todo.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.todo.model.dto.ProjectAgentCreateDTO;
-import uz.pdp.todo.model.dto.ProjectAgentResponseDTO;
+import uz.pdp.todo.model.dto.ProjectAgentDTO;
 import uz.pdp.todo.model.dto.ProjectAgentUpdateDTO;
 import uz.pdp.todo.service.ProjectAgentService;
 
@@ -16,22 +16,22 @@ public record ProjectAgentController(
 ) {
 
     @GetMapping
-    public ResponseEntity<List<ProjectAgentResponseDTO>> getAll() {
+    public ResponseEntity<List<ProjectAgentDTO>> getAll() {
         return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectAgentResponseDTO> get(@PathVariable("id") String id) {
+    public ResponseEntity<ProjectAgentDTO> get(@PathVariable("id") String id) {
         return ResponseEntity.ok(service.get(id));
     }
 
     @PostMapping
-    public ResponseEntity<ProjectAgentResponseDTO> create(@RequestBody ProjectAgentCreateDTO dto) {
+    public ResponseEntity<ProjectAgentDTO> create(@RequestBody ProjectAgentCreateDTO dto) {
         return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectAgentResponseDTO> update(@PathVariable("id") String id, @RequestBody ProjectAgentUpdateDTO dto) {
+    public ResponseEntity<ProjectAgentDTO> update(@PathVariable("id") String id, @RequestBody ProjectAgentUpdateDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
@@ -42,7 +42,7 @@ public record ProjectAgentController(
     }
 
     @GetMapping("/getByDBUrl")
-    public ResponseEntity<ProjectAgentResponseDTO> getByDBUrl(@RequestParam String dbUrl) {
+    public ResponseEntity<ProjectAgentDTO> getByDBUrl(@RequestParam String dbUrl) {
         return ResponseEntity.ok(service.getAgentByDBUrl(dbUrl));
     }
 }

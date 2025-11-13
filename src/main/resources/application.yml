@@ -14,7 +14,7 @@ spring:
 
 app-security:
   token:
-    access-exp: 180000
+    access-exp: 1800000
     refresh-exp: 86400000
     secret: bu_secret_key_uzunligi_kamida_32_byte_boliswqewqewqewq
 

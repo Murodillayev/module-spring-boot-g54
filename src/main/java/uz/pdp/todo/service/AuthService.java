@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.todo.config.jwt.JwtUtils;
 import uz.pdp.todo.model.entity.AuthUser;
-import uz.pdp.todo.model.dto.AuthUserDto;
+import uz.pdp.todo.model.dto.authUser.AuthUserDto;
 import uz.pdp.todo.model.dto.LoginResponse;
 import uz.pdp.todo.model.dto.TokenDto;
 import uz.pdp.todo.repository.AuthUserRepository;

@@ -2,9 +2,9 @@ package uz.pdp.todo.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.todo.model.dto.ProjectAgentCreateDTO;
-import uz.pdp.todo.model.dto.ProjectAgentDTO;
-import uz.pdp.todo.model.dto.ProjectAgentUpdateDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentCreateDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentUpdateDTO;
 import uz.pdp.todo.service.ProjectAgentService;
 
 import java.util.List;

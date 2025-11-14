@@ -23,15 +23,15 @@ public class ProjectDatabaseUserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDatabaseUserDto>> getAllDatabases() {
+    public ResponseEntity<List<ProjectDatabaseUserDto>> getAll() {
         return new ResponseEntity<>(service.getAll(),HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDatabaseUserDto> getDatabase(@PathVariable("id") String id) {
+    public ResponseEntity<ProjectDatabaseUserDto> get(@PathVariable("id") String id) {
         return new ResponseEntity<>(service.get(id), HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectDatabaseUserDto> updateDatabase(@RequestBody ProjectDatabaseUserUpdateDto updateDto, @PathVariable("id") String id) {
+    public ResponseEntity<ProjectDatabaseUserDto> update(@RequestBody ProjectDatabaseUserUpdateDto updateDto, @PathVariable("id") String id) {
         return new ResponseEntity<>(service.update(id,updateDto), HttpStatus.OK);
     }
 

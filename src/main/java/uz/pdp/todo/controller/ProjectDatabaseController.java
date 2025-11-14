@@ -18,25 +18,25 @@ public class ProjectDatabaseController {
     private final ProjectDatabaseService service;
 
     @PostMapping
-    public ResponseEntity<ProjectDatabaseDto> createDatabase(@RequestBody ProjectDatabaseCreateDto createDto) {
+    public ResponseEntity<ProjectDatabaseDto> create(@RequestBody ProjectDatabaseCreateDto createDto) {
         return new ResponseEntity<>(service.create(createDto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDatabaseDto>> getAllDatabases() {
+    public ResponseEntity<List<ProjectDatabaseDto>> getAll() {
         return new ResponseEntity<>(service.getAll(),HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDatabaseDto> getDatabase(@PathVariable("id") String id) {
+    public ResponseEntity<ProjectDatabaseDto> get(@PathVariable("id") String id) {
         return new ResponseEntity<>(service.get(id), HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectDatabaseDto> updateDatabase(@RequestBody ProjectDatabaseUpdateDto updateDto, @PathVariable("id") String id) {
+    public ResponseEntity<ProjectDatabaseDto> update(@RequestBody ProjectDatabaseUpdateDto updateDto, @PathVariable("id") String id) {
         return new ResponseEntity<>(service.update(id,updateDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDatabase(@PathVariable("id") String id) {
+    public void delete(@PathVariable("id") String id) {
         service.delete(id);
     }
 }

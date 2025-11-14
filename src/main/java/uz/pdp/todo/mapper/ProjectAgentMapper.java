@@ -1,8 +1,8 @@
 package uz.pdp.todo.mapper;
 
 import org.springframework.stereotype.Component;
-import uz.pdp.todo.model.dto.ProjectAgentCreateDTO;
-import uz.pdp.todo.model.dto.ProjectAgentDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentCreateDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentDTO;
 import uz.pdp.todo.model.entity.ProjectAgent;
 
 @Component

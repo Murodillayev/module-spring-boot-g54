@@ -15,5 +15,6 @@ public class ProjectDatabaseUserCreateDto {
     private String dbUsername;
     private String dbPassword;
     private String databaseId;
+    private String authUserId;
     private List<String> roleIds = Collections.emptyList();
 }

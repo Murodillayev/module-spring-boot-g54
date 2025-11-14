@@ -1,4 +1,5 @@
-package uz.pdp.todo.model.dto;
+package uz.pdp.todo.model.dto.agent;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectAgentDTO {
-    private String id;
+public class ProjectAgentUpdateDTO {
     private String name;
     private String databaseUsername;
-    private String databasePassword;
     private String databaseUrl;
 }

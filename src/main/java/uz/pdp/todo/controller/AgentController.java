@@ -4,12 +4,11 @@ package uz.pdp.todo.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.todo.model.dto.ProjectAgentCreateDTO;
-import uz.pdp.todo.model.dto.ProjectAgentDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentCreateDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentDTO;
 import uz.pdp.todo.model.dto.UserDto;
 import uz.pdp.todo.service.DatabaseUserService;
 import uz.pdp.todo.service.ProjectAgentService;
-import uz.pdp.todo.service.ProjectDatabaseService;
 
 import java.util.List;
 

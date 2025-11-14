@@ -1,12 +1,11 @@
 package uz.pdp.todo.service;
 
 import jakarta.transaction.Transactional;
-import org.springframework.security.web.server.authentication.ServerX509AuthenticationConverter;
 import org.springframework.stereotype.Service;
 import uz.pdp.todo.mapper.ProjectAgentMapper;
-import uz.pdp.todo.model.dto.ProjectAgentCreateDTO;
-import uz.pdp.todo.model.dto.ProjectAgentDTO;
-import uz.pdp.todo.model.dto.ProjectAgentUpdateDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentCreateDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentDTO;
+import uz.pdp.todo.model.dto.agent.ProjectAgentUpdateDTO;
 import uz.pdp.todo.model.dto.database.ProjectDatabaseCreateDto;
 import uz.pdp.todo.model.entity.ProjectAgent;
 import uz.pdp.todo.repository.ProjectAgentRepository;
@@ -73,8 +72,11 @@ public class ProjectAgentService extends AbstractService<ProjectAgentRepository,
 
     @Transactional
     public ProjectAgentDTO createWithDb(ProjectAgentCreateDTO dto) {
+        Optional<String> ifAlreadyExist = validator.checkIfAlreadyExist(dto);
+        if (ifAlreadyExist.isPresent()) {
+            return new ProjectAgentDTO(ifAlreadyExist.get(), dto.getName(), dto.getDatabaseUsername(), dto.getDatabasePassword(), dto.getDatabaseUrl());
+        }
         ProjectAgentDTO projectAgentDTO = create(dto);
-
         projectDatabaseService.create(ProjectDatabaseCreateDto.builder()
                 .agentId(projectAgentDTO.getId())
                 .name(projectAgentDTO.getName())

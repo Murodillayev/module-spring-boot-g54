@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserCreateDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserUpdateDto;
+import uz.pdp.todo.model.entity.AuthUser;
 import uz.pdp.todo.model.entity.DatabaseRole;
 import uz.pdp.todo.model.entity.ProjectDatabase;
 import uz.pdp.todo.model.entity.ProjectDatabaseUser;
@@ -13,6 +14,7 @@ import uz.pdp.todo.repository.ProjectDatabaseRepository;
 import uz.pdp.todo.repository.ProjectDatabaseUserRepository;
 import uz.pdp.todo.service.DatabaseRoleService;
 import uz.pdp.todo.service.VersionProviderService;
+import uz.pdp.todo.validator.AuthUserValidator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,8 +26,9 @@ public class ProjectDatabaseUserMapper implements BaseMapper {
     private final ProjectDatabaseUserRepository repository;
     private final ProjectDatabaseRepository projectDatabaseRepository;
     private final VersionProviderService versionProviderService;
-    private final DatabaseRoleService databaseRoleService;
     private final DatabaseRoleRepository databaseRoleRepository;
+    private final AuthUserValidator authUserValidator;
+    private final AuthUserMapper authUserMapper;
 
     public List<ProjectDatabaseUserDto> mapToDtoList(List<ProjectDatabaseUser> all) {
 
@@ -45,15 +48,18 @@ public class ProjectDatabaseUserMapper implements BaseMapper {
         databaseUserDto.setDbPassword(databaseUser.getPassword());
         databaseUserDto.setDbUsername(databaseUser.getUsername());
         databaseUserDto.setDatabaseId(databaseUser.getDatabase().getId());
+        databaseUserDto.setAuthUserDto(authUserMapper.toDto(databaseUser.getAuthUser()));
         databaseUserDto.setRoles(databaseUser.getRoles());
         return databaseUserDto;
     }
 
     public ProjectDatabaseUser mapToEntityOnCreate(ProjectDatabaseUserCreateDto createDto) {
+        AuthUser authUser = authUserValidator.existsAndGet(createDto.getAuthUserId());
         ProjectDatabaseUser projectDatabaseUser = new ProjectDatabaseUser();
         List<DatabaseRole> roles = databaseRoleRepository.findAllByIdIn(createDto.getRoleIds());
         ProjectDatabase database = projectDatabaseRepository.findById(createDto.getDatabaseId()).orElseThrow(() -> new RuntimeException("database not found"));
         projectDatabaseUser.setDatabase(database);
+        projectDatabaseUser.setAuthUser(authUser);
         projectDatabaseUser.setPassword(createDto.getDbPassword());
         projectDatabaseUser.setUsername(createDto.getDbUsername());
         projectDatabaseUser.setRoles(roles);
@@ -62,7 +68,6 @@ public class ProjectDatabaseUserMapper implements BaseMapper {
     }
 
     public void mapUpdate(ProjectDatabaseUser projectDatabaseUser, ProjectDatabaseUserUpdateDto dto) {
-
         List<DatabaseRole> roles = databaseRoleRepository.findAllById(dto.getRoleIds());
         projectDatabaseUser.setPassword(dto.getDbPassword());
         projectDatabaseUser.setUsername(dto.getDbUsername());

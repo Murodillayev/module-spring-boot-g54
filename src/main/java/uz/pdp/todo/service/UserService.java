@@ -3,9 +3,9 @@ package uz.pdp.todo.service;
 import org.springframework.stereotype.Service;
 import uz.pdp.todo.model.entity.AuthUser;
 import uz.pdp.todo.mapper.AuthUserMapper;
-import uz.pdp.todo.model.dto.AuthUserDto;
-import uz.pdp.todo.model.dto.AuthUserCreateDto;
-import uz.pdp.todo.model.dto.AuthUserUpdateDto;
+import uz.pdp.todo.model.dto.authUser.AuthUserDto;
+import uz.pdp.todo.model.dto.authUser.AuthUserCreateDto;
+import uz.pdp.todo.model.dto.authUser.AuthUserUpdateDto;
 import uz.pdp.todo.repository.AuthUserRepository;
 import uz.pdp.todo.validator.AuthUserValidator;
 

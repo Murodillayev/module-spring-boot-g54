@@ -1,12 +1,10 @@
-package uz.pdp.todo.model.dto;
+package uz.pdp.todo.model.dto.authUser;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uz.pdp.todo.model.entity.AuthRole;
+import uz.pdp.todo.model.dto.IdNameDto;
 
 @Data
 @Builder

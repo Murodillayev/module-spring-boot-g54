@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ProjectDatabaseRepository extends JpaRepository<ProjectDatabase,String> {
     List<ProjectDatabase> findAllByDeletedFalse();
 
-    @Query(value = "select * from database where name = :name and deleted =  false limit 1",
+    @Query(value = "select * from project_database where name = :name and deleted =  false limit 1",
             nativeQuery = true)
     Optional<ProjectDatabase> findDbByName(@Param("name") String name);
 

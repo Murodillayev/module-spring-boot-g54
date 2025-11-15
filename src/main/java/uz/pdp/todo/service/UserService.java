@@ -19,14 +19,18 @@ public class UserService
         AuthUserValidator>
         implements CRUDService<AuthUserDto, AuthUserCreateDto, AuthUserUpdateDto, String> {
 
-    public UserService(AuthUserRepository repository, AuthUserMapper mapper, AuthUserValidator validator) {
+    private final EmailService emailService;
+
+    public UserService(AuthUserRepository repository, AuthUserMapper mapper, AuthUserValidator validator, EmailService emailService) {
         super(repository, mapper, validator);
+        this.emailService = emailService;
     }
 
     @Override
     public AuthUserDto create(AuthUserCreateDto dto) {
         validator.validateOnCreate(dto);
         AuthUser authUser = mapper.fromDto(dto);
+        emailService.sendEmail(authUser.getEmail(),authUser.getUsername());
         return mapper.toDto(repository.save(authUser));
     }
 

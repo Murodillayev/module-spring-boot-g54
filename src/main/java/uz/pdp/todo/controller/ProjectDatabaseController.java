@@ -24,7 +24,8 @@ public class ProjectDatabaseController {
 
     @GetMapping
     public ResponseEntity<List<ProjectDatabaseDto>> getAll() {
-        return new ResponseEntity<>(service.getAll(),HttpStatus.OK);
+        List<ProjectDatabaseDto> all = service.getAll();
+        return new ResponseEntity<>(all,HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDatabaseDto> get(@PathVariable("id") String id) {

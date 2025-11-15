@@ -65,17 +65,18 @@ public class JwtFilter extends OncePerRequestFilter {
                     () -> new UsernameNotFoundException(username)
             );
             userId = authUser.getId();
-            roleName = authUser.getRole().getCode();
+//            roleName = authUser.getRole().getCode();
 
         } else {
-            roleName = claims.get("role", String.class);
+//            roleName = claims.get("role", String.class);
             userId = claims.get("userId", String.class);
         }
 
         return CustomUserDetails.builder()
                 .userId(userId)
                 .username(username)
-                .role(roleName)
+//                .role(roleName)
+                .role(null)
                 .build();
     }
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.pdp.todo.model.entity.base.BaseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,5 +28,5 @@ public class ProjectDatabase extends BaseEntity {
     private ProjectAgent agent;
 
     @OneToMany
-    private List<ProjectDatabaseUser> members;
+    private List<ProjectDatabaseUser> members = new ArrayList<>();
 }

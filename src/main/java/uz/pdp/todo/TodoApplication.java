@@ -15,11 +15,10 @@ import uz.pdp.todo.repository.AuthUserRepository;
 @EnableJpaAuditing
 public class TodoApplication {
     public static void main(String[] args) {
-
         SpringApplication.run(TodoApplication.class, args);
     }
 
-    //    @Bean
+        @Bean
     public CommandLineRunner runner(
             AuthUserRepository authUserRepository,
             AuthRoleRepository authRoleRepository,

@@ -5,7 +5,9 @@ import uz.pdp.todo.mapper.ProjectDatabaseUserMapper;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserCreateDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserUpdateDto;
+import uz.pdp.todo.model.entity.ProjectDatabase;
 import uz.pdp.todo.model.entity.ProjectDatabaseUser;
+import uz.pdp.todo.repository.ProjectDatabaseRepository;
 import uz.pdp.todo.repository.ProjectDatabaseUserRepository;
 import uz.pdp.todo.validator.ProjectDatabaseUserValidator;
 
@@ -17,8 +19,11 @@ public class ProjectDatabaseUserService extends AbstractService<
         ProjectDatabaseUserMapper,
         ProjectDatabaseUserValidator> implements CRUDService<ProjectDatabaseUserDto, ProjectDatabaseUserCreateDto, ProjectDatabaseUserUpdateDto, String> {
 
-    public ProjectDatabaseUserService(ProjectDatabaseUserRepository repository, ProjectDatabaseUserMapper mapper, ProjectDatabaseUserValidator validator) {
+    private final ProjectDatabaseRepository projectDatabaseRepository;
+
+    public ProjectDatabaseUserService(ProjectDatabaseUserRepository repository, ProjectDatabaseUserMapper mapper, ProjectDatabaseUserValidator validator, ProjectDatabaseRepository projectDatabaseRepository) {
         super(repository, mapper, validator);
+        this.projectDatabaseRepository = projectDatabaseRepository;
     }
 
 
@@ -27,6 +32,9 @@ public class ProjectDatabaseUserService extends AbstractService<
         validator.validateOnCreate(createDto);
         var databaseUser = mapper.mapToEntityOnCreate(createDto);
         repository.save(databaseUser);
+        ProjectDatabase database = databaseUser.getDatabase();
+        database.getMembers().add(databaseUser);
+        projectDatabaseRepository.save(database);
         return mapper.toDto(databaseUser);
     }
 

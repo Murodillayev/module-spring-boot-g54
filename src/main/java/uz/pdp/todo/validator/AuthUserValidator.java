@@ -13,7 +13,18 @@ public class AuthUserValidator implements BaseValidator {
     private final AuthUserRepository repository;
 
     public void validateOnCreate(AuthUserCreateDto dto) {
-        //validate logic
+        if (dto.getEmail()==null||dto.getEmail().isBlank()){
+            throw new RuntimeException("Email is required");
+        }
+        if (dto.getName()==null||dto.getName().isBlank()){
+            throw new RuntimeException("Name is required");
+        }
+        if (dto.getPassword()==null||dto.getPassword().isBlank()){
+            throw new RuntimeException("Password is required");
+        }
+        if (dto.getUsername()==null||dto.getUsername().isBlank()){
+            throw new RuntimeException("Username is required");
+        }
     }
 
     public AuthUser existsAndGet(String id) {

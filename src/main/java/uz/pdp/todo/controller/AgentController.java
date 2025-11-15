@@ -28,7 +28,7 @@ public class AgentController {
     }
 
     @GetMapping("/updates")
-    public ResponseEntity<List<UserDto>> create(@RequestParam String agentId, @RequestParam Long version) {
+    public ResponseEntity<List<UserDto>> getUpdatesForAgent(@RequestParam String agentId, @RequestParam Long version) {
         List<UserDto> users = databaseUserService.getAllForAgent(agentId, version);
         return ResponseEntity.ok(users);
 

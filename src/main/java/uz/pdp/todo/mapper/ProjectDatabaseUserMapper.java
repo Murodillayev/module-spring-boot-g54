@@ -12,11 +12,9 @@ import uz.pdp.todo.model.entity.ProjectDatabaseUser;
 import uz.pdp.todo.repository.DatabaseRoleRepository;
 import uz.pdp.todo.repository.ProjectDatabaseRepository;
 import uz.pdp.todo.repository.ProjectDatabaseUserRepository;
-import uz.pdp.todo.service.DatabaseRoleService;
 import uz.pdp.todo.service.VersionProviderService;
 import uz.pdp.todo.validator.AuthUserValidator;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,7 +61,7 @@ public class ProjectDatabaseUserMapper implements BaseMapper {
         projectDatabaseUser.setPassword(createDto.getDbPassword());
         projectDatabaseUser.setUsername(createDto.getDbUsername());
         projectDatabaseUser.setRoles(roles);
-        projectDatabaseUser.setVersion(versionProviderService.getMaxVersion(database));
+        projectDatabaseUser.setVersion(versionProviderService.getMaxVersionAndAddOne(database));
         return projectDatabaseUser;
     }
 
@@ -74,7 +72,7 @@ public class ProjectDatabaseUserMapper implements BaseMapper {
         projectDatabaseUser.setRoles(roles);
         ProjectDatabase database = projectDatabaseRepository.findById(dto.getDatabaseId()).orElseThrow(() -> new RuntimeException("database not found"));
         projectDatabaseUser.setDatabase(database);
-        projectDatabaseUser.setVersion(versionProviderService.getMaxVersion(database));
+        projectDatabaseUser.setVersion(versionProviderService.getMaxVersionAndAddOne(database));
     }
 
     public List<ProjectDatabaseUserDto> toListDto() {

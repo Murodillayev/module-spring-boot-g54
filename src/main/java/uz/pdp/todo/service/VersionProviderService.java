@@ -9,7 +9,10 @@ import java.util.Optional;
 @Service
 public class VersionProviderService {
 
-    public Integer getMaxVersion(ProjectDatabase database) {
+    public Integer getMaxVersionAndAddOne(ProjectDatabase database) {
+        if (database.getMembers()==null||database.getMembers().isEmpty()){
+            return 1;
+        }
         Optional<Integer> max = database.getMembers()
                 .stream()
                 .map(ProjectDatabaseUser::getVersion)

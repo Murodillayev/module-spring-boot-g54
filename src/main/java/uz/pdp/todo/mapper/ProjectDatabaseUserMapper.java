@@ -2,6 +2,7 @@ package uz.pdp.todo.mapper;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import uz.pdp.todo.model.dto.AuthUserDbsResponse;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserCreateDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserUpdateDto;
@@ -14,9 +15,12 @@ import uz.pdp.todo.repository.ProjectDatabaseRepository;
 import uz.pdp.todo.repository.ProjectDatabaseUserRepository;
 import uz.pdp.todo.service.VersionProviderService;
 import uz.pdp.todo.validator.AuthUserValidator;
+import uz.pdp.todo.validator.ProjectDatabaseValidator;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -27,6 +31,8 @@ public class ProjectDatabaseUserMapper implements BaseMapper {
     private final DatabaseRoleRepository databaseRoleRepository;
     private final AuthUserValidator authUserValidator;
     private final AuthUserMapper authUserMapper;
+    private final DatabaseRoleMapper databaseRoleMapper;
+    private final ProjectDatabaseValidator projectDatabaseValidator;
 
     public List<ProjectDatabaseUserDto> mapToDtoList(List<ProjectDatabaseUser> all) {
 
@@ -52,10 +58,11 @@ public class ProjectDatabaseUserMapper implements BaseMapper {
     }
 
     public ProjectDatabaseUser mapToEntityOnCreate(ProjectDatabaseUserCreateDto createDto) {
-        AuthUser authUser = authUserValidator.existsAndGet(createDto.getAuthUserId());
         ProjectDatabaseUser projectDatabaseUser = new ProjectDatabaseUser();
-        List<DatabaseRole> roles = databaseRoleRepository.findAllByIdIn(createDto.getRoleIds());
         ProjectDatabase database = projectDatabaseRepository.findById(createDto.getDatabaseId()).orElseThrow(() -> new RuntimeException("database not found"));
+        AuthUser authUser = authUserValidator.existsAndGet(createDto.getAuthUserId());
+        projectDatabaseValidator.checkIfMemberAlreadyExists(database,createDto.getAuthUserId());
+        List<DatabaseRole> roles = databaseRoleRepository.findAllByIdIn(createDto.getRoleIds());
         projectDatabaseUser.setDatabase(database);
         projectDatabaseUser.setAuthUser(authUser);
         projectDatabaseUser.setPassword(createDto.getDbPassword());
@@ -78,7 +85,26 @@ public class ProjectDatabaseUserMapper implements BaseMapper {
     public List<ProjectDatabaseUserDto> toListDto() {
         return repository.findAll()
                 .stream()
+                .filter(m->!m.getDeleted())
                 .map(this::toDto)
                 .toList();
+    }
+
+    public List<AuthUserDbsResponse> mapToAuthUserDbResponse(List<ProjectDatabase> allByMemberId,String authUserId) {
+        return allByMemberId
+                .stream()
+                  .flatMap(db->db.getMembers().stream()
+                    .filter(m->m.getAuthUser().getId().equals(authUserId)&& !m.getDeleted())
+                      .map(m-> new AuthUserDbsResponse(
+                              db.getName(),
+                              m.getUsername(),
+                              m.getPassword(),
+                              databaseRoleMapper.toListDto(m.getRoles()))))
+                .      toList();
+    }
+
+    public void mapToDelete(ProjectDatabaseUser projectDatabaseUser) {
+        projectDatabaseUser.setDeleted(true);
+        projectDatabaseUser.setVersion(versionProviderService.getMaxVersionAndAddOne(projectDatabaseUser.getDatabase()));
     }
 }

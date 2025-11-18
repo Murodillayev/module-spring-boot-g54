@@ -8,8 +8,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import uz.pdp.todo.model.entity.AuthRole;
 import uz.pdp.todo.model.entity.AuthUser;
+import uz.pdp.todo.model.entity.DatabaseRole;
 import uz.pdp.todo.repository.AuthRoleRepository;
 import uz.pdp.todo.repository.AuthUserRepository;
+import uz.pdp.todo.repository.DatabaseRoleRepository;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -18,27 +20,14 @@ public class TodoApplication {
         SpringApplication.run(TodoApplication.class, args);
     }
 
-        @Bean
+//        @Bean
     public CommandLineRunner runner(
-            AuthUserRepository authUserRepository,
-            AuthRoleRepository authRoleRepository,
-            PasswordEncoder passwordEncoder
+            DatabaseRoleRepository databaseRoleRepository
     ) {
         return args -> {
-            AuthUser authUser = new AuthUser();
-            AuthRole role = new AuthRole();
-
-            role.setCode("SUPER_ADMIN");
-            role.setName("Super admin");
-            authRoleRepository.save(role);
-
-            authUser.setRole(role);
-            authUser.setUsername("admin");
-            authUser.setPassword(passwordEncoder.encode("123"));
-            authUser.setPhone("998912123112");
-            authUser.setEmail("test@gmail.com");
-            authUser.setName("Muhammadkomil");
-            authUserRepository.save(authUser);
+            databaseRoleRepository.save(new DatabaseRole("project_select","PROJECT_SELECT","can select from tables but can't do CRUD"));
+            databaseRoleRepository.save(new DatabaseRole("project_create","PROJECT_CREATE","can create but cannot do CRUD"));
+            databaseRoleRepository.save(new DatabaseRole("project_crud","PROJECT_CRUD","can do CRUD but cannot create"));
         };
     }
 

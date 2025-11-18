@@ -1,7 +1,10 @@
 package uz.pdp.todo.service;
 
 import org.springframework.stereotype.Component;
+import uz.pdp.todo.mapper.ProjectDatabaseMapper;
 import uz.pdp.todo.mapper.ProjectDatabaseUserMapper;
+import uz.pdp.todo.model.dto.AuthUserDbsResponse;
+import uz.pdp.todo.model.dto.database.ProjectDatabaseDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserCreateDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserUpdateDto;
@@ -9,6 +12,7 @@ import uz.pdp.todo.model.entity.ProjectDatabase;
 import uz.pdp.todo.model.entity.ProjectDatabaseUser;
 import uz.pdp.todo.repository.ProjectDatabaseRepository;
 import uz.pdp.todo.repository.ProjectDatabaseUserRepository;
+import uz.pdp.todo.validator.AuthUserValidator;
 import uz.pdp.todo.validator.ProjectDatabaseUserValidator;
 
 import java.util.List;
@@ -20,10 +24,14 @@ public class ProjectDatabaseUserService extends AbstractService<
         ProjectDatabaseUserValidator> implements CRUDService<ProjectDatabaseUserDto, ProjectDatabaseUserCreateDto, ProjectDatabaseUserUpdateDto, String> {
 
     private final ProjectDatabaseRepository projectDatabaseRepository;
+    private final AuthUserValidator authUserValidator;
+    private final ProjectDatabaseMapper projectDatabaseMapper;
 
-    public ProjectDatabaseUserService(ProjectDatabaseUserRepository repository, ProjectDatabaseUserMapper mapper, ProjectDatabaseUserValidator validator, ProjectDatabaseRepository projectDatabaseRepository) {
+    public ProjectDatabaseUserService(ProjectDatabaseUserRepository repository, ProjectDatabaseUserMapper mapper, ProjectDatabaseUserValidator validator, ProjectDatabaseRepository projectDatabaseRepository, AuthUserValidator authUserValidator, ProjectDatabaseMapper projectDatabaseMapper) {
         super(repository, mapper, validator);
         this.projectDatabaseRepository = projectDatabaseRepository;
+        this.authUserValidator = authUserValidator;
+        this.projectDatabaseMapper = projectDatabaseMapper;
     }
 
 
@@ -60,7 +68,14 @@ public class ProjectDatabaseUserService extends AbstractService<
     @Override
     public void delete(String id) {
         ProjectDatabaseUser projectDatabaseUser = validator.validateId(id);
-        projectDatabaseUser.setDeleted(true);
+        mapper.mapToDelete(projectDatabaseUser);
         repository.save(projectDatabaseUser);
+    }
+
+    public List<AuthUserDbsResponse> getAuthUserDatabases(String authUserId) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        authUserValidator.existsAndGet(authUserId);
+        List<ProjectDatabase> allByMemberId = repository.findAllByMemberId(authUserId);
+       return mapper.mapToAuthUserDbResponse(allByMemberId,authUserId);
     }
 }

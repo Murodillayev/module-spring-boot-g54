@@ -20,7 +20,7 @@ public record ProjectAgentValidator(
     }
 
     public ProjectAgent existsAndGet(String id) {
-        return repository.findById(id).orElseThrow(
+        return repository.findByIdAndDeleted(id,false).orElseThrow(
                 () -> new RuntimeException("Project agent with id " + id + " not found")
         );
     }

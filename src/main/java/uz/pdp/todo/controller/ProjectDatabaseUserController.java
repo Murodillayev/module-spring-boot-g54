@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.todo.model.dto.AuthUserDbsResponse;
+import uz.pdp.todo.model.dto.database.ProjectDatabaseDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserCreateDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserDto;
 import uz.pdp.todo.model.dto.databaseUser.ProjectDatabaseUserUpdateDto;
@@ -30,6 +32,12 @@ public class ProjectDatabaseUserController {
     public ResponseEntity<ProjectDatabaseUserDto> get(@PathVariable("id") String id) {
         return new ResponseEntity<>(service.get(id), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/databases")
+    public ResponseEntity<List<AuthUserDbsResponse>> getUserDb(@PathVariable("id") String id) {
+        return new ResponseEntity<>(service.getAuthUserDatabases(id), HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ProjectDatabaseUserDto> update(@RequestBody ProjectDatabaseUserUpdateDto updateDto, @PathVariable("id") String id) {
         return new ResponseEntity<>(service.update(id,updateDto), HttpStatus.OK);

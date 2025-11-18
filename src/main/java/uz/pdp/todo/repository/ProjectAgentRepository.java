@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface ProjectAgentRepository extends JpaRepository<ProjectAgent, String> {
     Optional<ProjectAgent> findByDatabaseUrl(String databaseUrl);
+
+    Optional<ProjectAgent> findByIdAndDeleted(String id, Boolean deleted);
 }

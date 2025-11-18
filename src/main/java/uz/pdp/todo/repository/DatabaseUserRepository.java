@@ -26,7 +26,6 @@ public interface DatabaseUserRepository extends CrudRepository<ProjectDatabaseUs
             where du.version > ?2
               and pd.agent_id = ?1
             group by du.id, du.username, du.password, du.deleted, du.version
-            
             """, nativeQuery = true)
     List<Object[]> getAllForAgent(String agentId, Long version);
 }

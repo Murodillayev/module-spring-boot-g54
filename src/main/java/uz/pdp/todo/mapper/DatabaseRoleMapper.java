@@ -5,6 +5,8 @@ import uz.pdp.todo.model.dto.DatabaseRoleCreateDTO;
 import uz.pdp.todo.model.dto.DatabaseRoleDTO;
 import uz.pdp.todo.model.entity.DatabaseRole;
 
+import java.util.List;
+
 @Component
 public class DatabaseRoleMapper implements BaseMapper {
 
@@ -16,7 +18,7 @@ public class DatabaseRoleMapper implements BaseMapper {
         return databaseRole;
     }
 
-    public DatabaseRole toEntity(DatabaseRoleDTO dto) {
+    public DatabaseRole toListDto(DatabaseRoleDTO dto) {
         DatabaseRole databaseRole = new DatabaseRole();
         databaseRole.setId(dto.getId());
         databaseRole.setName(dto.getName());
@@ -32,5 +34,11 @@ public class DatabaseRoleMapper implements BaseMapper {
         dto.setDescription(databaseRole.getDescription());
         dto.setCode(databaseRole.getCode());
         return dto;
+    }
+    public List<DatabaseRoleDTO> toListDto(List<DatabaseRole> roles) {
+        return roles
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 }

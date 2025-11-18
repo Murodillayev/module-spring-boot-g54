@@ -17,10 +17,10 @@ import java.util.List;
 public class ProjectDatabaseController {
     private final ProjectDatabaseService service;
 
-    @PostMapping
-    public ResponseEntity<ProjectDatabaseDto> create(@RequestBody ProjectDatabaseCreateDto createDto) {
-        return new ResponseEntity<>(service.create(createDto), HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity<ProjectDatabaseDto> create(@RequestBody ProjectDatabaseCreateDto createDto) {
+//        return new ResponseEntity<>(service.create(createDto), HttpStatus.CREATED);
+//    }
 
     @GetMapping
     public ResponseEntity<List<ProjectDatabaseDto>> getAll() {

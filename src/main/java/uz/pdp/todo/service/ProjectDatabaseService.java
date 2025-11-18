@@ -1,5 +1,7 @@
 package uz.pdp.todo.service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uz.pdp.todo.mapper.ProjectDatabaseMapper;
 import uz.pdp.todo.model.dto.database.ProjectDatabaseCreateDto;
@@ -7,6 +9,7 @@ import uz.pdp.todo.model.dto.database.ProjectDatabaseDto;
 import uz.pdp.todo.model.dto.database.ProjectDatabaseUpdateDto;
 import uz.pdp.todo.model.entity.ProjectDatabase;
 import uz.pdp.todo.repository.ProjectDatabaseRepository;
+import uz.pdp.todo.validator.AuthUserValidator;
 import uz.pdp.todo.validator.ProjectDatabaseValidator;
 
 import java.util.List;

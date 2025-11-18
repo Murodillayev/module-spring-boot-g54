@@ -37,8 +37,7 @@ public class DatabaseUserService {
                 try {
                     rolesList = mapper.readValue(rolesJson, new TypeReference<>() {
                     });
-                } catch (JsonProcessingException e) {
-                    rolesList = Collections.emptyList();
+                } catch (JsonProcessingException ignored) {
                 }
             }
 

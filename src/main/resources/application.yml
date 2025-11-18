@@ -10,7 +10,17 @@ spring:
     show-sql: true
   jackson:
     time-zone: Asia/Tashkent
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 15c581ab473b53
+    password: 13b44caa4b1922
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 app-security:
   token:
     access-exp: 1800000

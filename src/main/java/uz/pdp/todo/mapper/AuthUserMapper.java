@@ -9,6 +9,7 @@ import uz.pdp.todo.model.dto.authUser.AuthUserUpdateDto;
 import uz.pdp.todo.model.dto.IdNameDto;
 import uz.pdp.todo.model.entity.AuthRole;
 import uz.pdp.todo.model.entity.AuthUser;
+import uz.pdp.todo.service.PasswordGenerator;
 import uz.pdp.todo.validator.AuthRoleValidator;
 
 import java.util.List;
@@ -19,13 +20,14 @@ import java.util.stream.Collectors;
 public class AuthUserMapper implements BaseMapper {
     private final AuthRoleValidator authRoleValidator;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordGenerator passwordGenerator;
 
     public AuthUser fromDto(AuthUserCreateDto dto) {
         AuthRole role = authRoleValidator.existsAndGet(dto.getRoleId());
         AuthUser authUser = new AuthUser();
         authUser.setEmail(dto.getEmail());
         authUser.setUsername(dto.getUsername());
-        authUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+        authUser.setPassword(passwordEncoder.encode(passwordGenerator.generatePassword()));
         authUser.setName(dto.getName());
         authUser.setPhone(dto.getPhone());
         authUser.setRole(role);

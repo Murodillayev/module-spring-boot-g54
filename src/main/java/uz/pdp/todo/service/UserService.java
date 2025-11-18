@@ -30,7 +30,7 @@ public class UserService
     public AuthUserDto create(AuthUserCreateDto dto) {
         validator.validateOnCreate(dto);
         AuthUser authUser = mapper.fromDto(dto);
-        emailService.sendEmail(authUser.getEmail(),authUser.getUsername());
+        emailService.sendEmail(authUser);
         return mapper.toDto(repository.save(authUser));
     }
 

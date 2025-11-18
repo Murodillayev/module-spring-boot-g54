@@ -7,7 +7,6 @@ import uz.pdp.todo.model.dto.database.ProjectDatabaseDto;
 import uz.pdp.todo.model.dto.database.ProjectDatabaseUpdateDto;
 import uz.pdp.todo.model.entity.ProjectDatabase;
 import uz.pdp.todo.repository.ProjectDatabaseRepository;
-import uz.pdp.todo.repository.ProjectDatabaseUserRepository;
 import uz.pdp.todo.validator.ProjectAgentValidator;
 
 import java.util.List;
@@ -18,7 +17,6 @@ public class ProjectDatabaseMapper implements BaseMapper {
     private final ProjectDatabaseRepository repository;
     private final ProjectDatabaseUserMapper databaseUserMapper;
     private final ProjectAgentValidator projectAgentValidator;
-    private final ProjectDatabaseUserRepository projectDatabaseUserRepository;
     private final ProjectAgentMapper projectAgentMapper;
 
     public ProjectDatabase toEntityFromCreate(ProjectDatabaseCreateDto createDto) {
@@ -44,11 +42,17 @@ public class ProjectDatabaseMapper implements BaseMapper {
         projectDatabase.setName(dto.getName());
         projectDatabase.setDescription(dto.getDescription());
         projectDatabase.setAgent(projectAgentValidator.existsAndGet(dto.getAgentId()));
-        projectDatabase.setMembers(projectDatabaseUserRepository.findAllByIdIn(dto.getMembersId()));
+        projectDatabase.setMembers(repository.findAllByIdIn(dto.getMembersId()));
     }
 
     public List<ProjectDatabaseDto> toDtoList() {
         return repository.findAll()
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+    public List<ProjectDatabaseDto> toDtoList(List<ProjectDatabase> all) {
+        return all
                 .stream()
                 .map(this::toDto)
                 .toList();

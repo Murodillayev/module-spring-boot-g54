@@ -25,7 +25,7 @@ public class AuthRoleService
     @Override
     public AuthRoleDto create(AuthRoleChangeDto dto) {
         AuthRole role = new AuthRole();
-        // todo validationlar qilinishi kerak
+        validator.validateOnCreate(dto);
         role.setName(dto.getName());
         role.setCode(dto.getCode());
         repository.save(role);
@@ -42,7 +42,7 @@ public class AuthRoleService
         AuthRole role = validator.existsAndGet(id);
         role.setName(dto.getName());
         role.setCode(dto.getCode());
-        AuthRole save = repository.save(role);
+        repository.save(role);
         return AuthRoleDto.builder()
                 .id(role.getId())
                 .name(role.getName())

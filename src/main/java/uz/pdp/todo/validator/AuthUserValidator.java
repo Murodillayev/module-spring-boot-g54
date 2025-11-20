@@ -7,12 +7,19 @@ import uz.pdp.todo.model.dto.authUser.AuthUserCreateDto;
 import uz.pdp.todo.model.entity.AuthUser;
 import uz.pdp.todo.repository.AuthUserRepository;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class AuthUserValidator implements BaseValidator {
     private final AuthUserRepository repository;
 
     public void validateOnCreate(AuthUserCreateDto dto) {
+        Optional<AuthUser> byUsername =
+                repository.findByUsername(dto.getUsername());
+        if (byUsername.isPresent()) {
+            throw new RuntimeException("user with username: '%s' already exists".formatted(dto.getUsername()));
+        }
         if (dto.getEmail()==null||dto.getEmail().isBlank()){
             throw new RuntimeException("Email is required");
         }
@@ -28,7 +35,7 @@ public class AuthUserValidator implements BaseValidator {
     }
 
     public AuthUser existsAndGet(String id) {
-        return repository.findById(id).orElseThrow(
+        return repository.findByIdAndDeleted(id,false).orElseThrow(
                 () -> new RuntimeException("User with id " + id + " not found")
         );
     }

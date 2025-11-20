@@ -1,6 +1,9 @@
 package uz.pdp.todo.service;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import uz.pdp.todo.events.SendEmailEvent;
 import uz.pdp.todo.model.entity.AuthUser;
 import uz.pdp.todo.mapper.AuthUserMapper;
 import uz.pdp.todo.model.dto.authUser.AuthUserDto;
@@ -19,18 +22,19 @@ public class UserService
         AuthUserValidator>
         implements CRUDService<AuthUserDto, AuthUserCreateDto, AuthUserUpdateDto, String> {
 
-    private final EmailService emailService;
+    private final ApplicationEventPublisher publisher;
 
-    public UserService(AuthUserRepository repository, AuthUserMapper mapper, AuthUserValidator validator, EmailService emailService) {
+    public UserService(AuthUserRepository repository, AuthUserMapper mapper, AuthUserValidator validator, ApplicationEventPublisher publisher) {
         super(repository, mapper, validator);
-        this.emailService = emailService;
+        this.publisher = publisher;
     }
 
     @Override
+    @Transactional
     public AuthUserDto create(AuthUserCreateDto dto) {
         validator.validateOnCreate(dto);
         AuthUser authUser = mapper.fromDto(dto);
-        emailService.sendEmail(authUser);
+        publisher.publishEvent(new SendEmailEvent(this, authUser.getEmail(),dto.getPassword(),authUser.getUsername()));
         return mapper.toDto(repository.save(authUser));
     }
 

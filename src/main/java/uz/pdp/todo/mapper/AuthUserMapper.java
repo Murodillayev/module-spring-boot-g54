@@ -3,6 +3,7 @@ package uz.pdp.todo.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import uz.pdp.todo.events.SendEmailEvent;
 import uz.pdp.todo.model.dto.authUser.AuthUserCreateDto;
 import uz.pdp.todo.model.dto.authUser.AuthUserDto;
 import uz.pdp.todo.model.dto.authUser.AuthUserUpdateDto;

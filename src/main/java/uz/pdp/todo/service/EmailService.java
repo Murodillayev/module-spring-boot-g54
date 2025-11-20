@@ -15,12 +15,12 @@ public class EmailService {
     private final JavaMailSender mailSender;
 
     @Async
-    public void sendEmail(AuthUser authUser) {
+    public void sendEmail(String userEmail, String userName, String userPassword) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(authUser.getEmail());
+        mailMessage.setTo(userEmail);
         mailMessage.setSubject("User name and password for login");
-        mailMessage.setText("your user name %s and %s for login. DO NOT SHARE IT WITH ANYONE!!!".formatted(authUser.getUsername(),authUser.getPassword()));
+        mailMessage.setText("Hey there!\nYou have been successfully registered to Hub!🤗🤗🤗\nHere are details for login: username =  %s and password = %s for login. DO NOT SHARE IT WITH ANYONE!!!".formatted(userName, userPassword));
         mailSender.send(mailMessage);
-        log.info("Email sent successfully to email : {} ", authUser.getEmail());
+        log.info("Email sent successfully to email : {} ", userEmail);
     }
 }

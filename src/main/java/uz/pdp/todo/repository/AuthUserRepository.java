@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface AuthUserRepository extends JpaRepository<AuthUser, String> {
 
     Optional<AuthUser> findByUsername(String username);
+
+    Optional<AuthUser> findByIdAndDeleted(String id, Boolean deleted);
 }

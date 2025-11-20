@@ -12,3 +12,8 @@ spring:
     time-zone: Asia/Tashkent
 
 
+  liquibase:
+    change-log: classpath:/db/changelog/changlog-master.yml
+#    change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+

@@ -11,5 +11,8 @@ spring:
   jackson:
     time-zone: Asia/Tashkent
 
+  profiles:
+    active: redis
+
 
 

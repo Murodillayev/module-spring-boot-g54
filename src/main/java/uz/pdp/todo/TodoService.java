@@ -25,22 +25,23 @@ import java.util.stream.Collectors;
 public class TodoService {
 
     private final TodoRepository todoRepository;
+    private final CacheService cacheService;
 
     @SneakyThrows
-    @Cacheable(value = "todos", key = "#completed", condition = "#completed != null")
-    public List<TodoResponseDto> getAllTodos(Boolean completed) {
-        Thread.sleep(2000);
+    public List<TodoResponseDto> getAllTodos() {
 
-        if (completed != null) {
-            return todoRepository.findAllByCompleted(completed).stream()
-                    .map(this::toResponseDto)
-                    .collect(Collectors.toList());
-        } else {
-            return todoRepository.findAll().stream()
-                    .map(this::toResponseDto)
-                    .collect(Collectors.toList());
+        if (cacheService.get("todos") != null) {
+            return cacheService.get("todos");
         }
 
+        Thread.sleep(2000);
+        List<TodoResponseDto> collect = todoRepository.findAll().stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+
+        cacheService.put("todos", collect);
+
+        return collect;
     }
 
 

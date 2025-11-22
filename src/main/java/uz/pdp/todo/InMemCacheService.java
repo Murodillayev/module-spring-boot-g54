@@ -1,5 +1,10 @@
 package uz.pdp.todo;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import uz.pdp.todo.dto.TodoResponseDto;
 
@@ -8,9 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Profile("!redis")
 public class InMemCacheService implements CacheService {
 
-    private final Map<String, List<TodoResponseDto>> cache = new HashMap<>();
+    private final Cache cache;
+
+    public InMemCacheService(CacheManager manager) {
+        this.cache = manager.getCache("todos");
+    }
+//    private final Map<String, List<TodoResponseDto>> cache = new HashMap<>();
 
     @Override
     public void put(String key, List<TodoResponseDto> todos) {
@@ -18,12 +29,13 @@ public class InMemCacheService implements CacheService {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<TodoResponseDto> get(String key) {
-        return cache.get(key);
+         return (List<TodoResponseDto>) cache.get(key);
     }
 
     @Override
     public void remove(String todos) {
-        cache.remove(todos);
+       cache.evict(todos);
     }
 }

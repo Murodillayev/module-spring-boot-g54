@@ -26,9 +26,9 @@ public class TodoController {
     // GET /api/todos
     @GetMapping
     @SneakyThrows
-    public ResponseEntity<List<TodoResponseDto>> getAllTodos() {
+    public ResponseEntity<List<TodoResponseDto>> getAllTodos(@RequestParam(required = false) Boolean completed) {
 
-        return ResponseEntity.ok(todoService.getAllTodos());
+        return ResponseEntity.ok(todoService.getAllTodos(completed));
     }
 
     // GET /api/todos/{id}

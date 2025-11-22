@@ -4,8 +4,9 @@ package uz.pdp.todo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.todo.dto.TodoRequestDto;
@@ -14,32 +15,36 @@ import uz.pdp.todo.dto.TodoResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+// Map todos = new
+// Map todo = new  1, todo, 2, todo
+// todos pit todos,List<Todo>
+
 @Service
 @RequiredArgsConstructor
 public class TodoService {
 
     private final TodoRepository todoRepository;
-    private final CacheService cacheService;
 
     @SneakyThrows
-    public List<TodoResponseDto> getAllTodos() {
+    @Cacheable(value = "todos", key = "#completed", condition = "#completed != null")
+    public List<TodoResponseDto> getAllTodos(Boolean completed) {
+        Thread.sleep(2000);
 
-        List<TodoResponseDto> todos = cacheService.get("todos");
-        if (todos != null) {
-            return todos;
-
-        } else {
-            Thread.sleep(2000);
-            todos = todoRepository.findAll().stream()
+        if (completed != null) {
+            return todoRepository.findAllByCompleted(completed).stream()
                     .map(this::toResponseDto)
                     .collect(Collectors.toList());
-
-            cacheService.put("todos", todos);
+        } else {
+            return todoRepository.findAll().stream()
+                    .map(this::toResponseDto)
+                    .collect(Collectors.toList());
         }
 
-        return todos;
     }
 
+
+    @Cacheable(value = "todo", key = "#id")
     public TodoResponseDto getTodoById(Long id) {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Todo topilmadi: " + id));
@@ -47,8 +52,8 @@ public class TodoService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "todos", allEntries = true)
     public TodoResponseDto createTodo(TodoRequestDto request) {
-        cacheService.remove("todos");
         Todo todo = new Todo();
         todo.setTitle(request.title());
         todo.setDescription(request.description());
@@ -59,8 +64,8 @@ public class TodoService {
     }
 
     @Transactional
+    @CachePut(cacheNames = "todos", key = "#id")
     public TodoResponseDto updateTodo(Long id, TodoRequestDto request) {
-        cacheService.remove("todos");
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Todo topilmadi: " + id));
 
@@ -76,8 +81,8 @@ public class TodoService {
 
     // Faqat completed holatini o'zgartirish (masalan, checkbox bosilganda)
     @Transactional
+    @CacheEvict(cacheNames = "todos", allEntries = true)
     public TodoResponseDto toggleCompleted(Long id) {
-        cacheService.remove("todos");
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Todo topilmadi: " + id));
 
@@ -87,9 +92,9 @@ public class TodoService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "todos", allEntries = true)
     public void deleteTodo(Long id) {
 
-        cacheService.remove("todos");
         if (!todoRepository.existsById(id)) {
             throw new RuntimeException("Todo topilmadi: " + id);
         }

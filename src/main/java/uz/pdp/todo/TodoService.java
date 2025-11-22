@@ -60,7 +60,6 @@ public class TodoService {
 
     @Transactional
     public TodoResponseDto updateTodo(Long id, TodoRequestDto request) {
-        cacheService.remove("todos");
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Todo topilmadi: " + id));
 
@@ -71,7 +70,9 @@ public class TodoService {
         }
 
         todo = todoRepository.save(todo);
-        return toResponseDto(todo);
+        TodoResponseDto responseDto = toResponseDto(todo);
+        cacheService.putUpdate("todos", id, responseDto);
+        return responseDto;
     }
 
     // Faqat completed holatini o'zgartirish (masalan, checkbox bosilganda)

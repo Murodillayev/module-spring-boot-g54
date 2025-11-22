@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface CacheService {
 
+    void putUpdate(String key, Long id, TodoResponseDto dto);
 
     void put(String key, List<TodoResponseDto> todos);
 

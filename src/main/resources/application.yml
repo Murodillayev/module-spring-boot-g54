@@ -1,18 +1,3 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/todo
-    username: macbookpro
-    password: 19801980
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
-  jackson:
-    time-zone: Asia/Tashkent
-
-  profiles:
-    active: redis
 
 
 

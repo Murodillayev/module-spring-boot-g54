@@ -1,5 +1,6 @@
 package uz.pdp.todo;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -7,13 +8,10 @@ import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 
 @ShellComponent
+@RequiredArgsConstructor
 public class CalculatorCommands {
 
     private final CalculatorService service;
-
-    public CalculatorCommands(CalculatorService service) {
-        this.service = service;
-    }
 
     @ShellMethod("Bu qo'shadi")
     public Double add(Double a, Double b) {
@@ -42,13 +40,13 @@ public class CalculatorCommands {
 
     @ShellMethodAvailability({"multiply", "divide", "s", "add"})
     Availability availability() {
+
         if (SecurityContext.getCurrentUser() != null) {
             return Availability.available();
         }
         return Availability.unavailable("Please login!");
     }
-
-
-
-
 }
+
+
+//

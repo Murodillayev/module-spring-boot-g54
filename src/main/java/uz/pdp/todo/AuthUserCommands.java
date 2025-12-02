@@ -31,7 +31,7 @@ public class AuthUserCommands {
     @ShellMethod
     public void logout() {
         SecurityContext.setCurrentUser(null);
-        System.out.println("Successfully logged in!");
+        System.out.println("Bye 👋 !!!");
 
     }
 }

@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CalculatorService {
 
-
-
     public Double add(Double a, Double b) {
         return a + b;
     }

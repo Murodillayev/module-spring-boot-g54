@@ -64,7 +64,7 @@ select t1_0.id,t1_0.completed,t1_0.created_at,t1_0.description,t1_0.title from t
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
 	at jdk.proxy4/jdk.proxy4.$Proxy125.findAll(Unknown Source)
-	at uz.pdp.todo.controller.TodoController.getAll(TodoController.java:42)
+	at uz.pdp.todo.resource.TodoController.getAll(TodoController.java:42)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)

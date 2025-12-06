@@ -1,0 +1,28 @@
+type Query {
+    getTodos: [Todo],
+    getTodo(id:ID): Todo
+}
+
+type Mutation {
+    createTodo(dto:TodoCreateDto):Todo,
+    deleteTodo(id: ID): Boolean
+}
+
+
+type Todo {
+    id: ID,
+    title : String,
+    description: String,
+    completed: Boolean
+}
+
+input TodoCreateDto {
+    title : String,
+    description: String
+}
+
+enum Gender {
+    MALE,
+    FEMALE
+}
+

@@ -8,10 +8,3 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
-
-
-  graphql:
-    graphiql:
-      enabled: true
-      path: /graphiql

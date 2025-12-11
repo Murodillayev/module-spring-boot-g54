@@ -1,13 +1,11 @@
 package uz.pdp.todo;
 
-import lombok.SneakyThrows;
-import org.springframework.scheduling.annotation.Scheduled;
+import jakarta.validation.constraints.Positive;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
@@ -18,14 +16,11 @@ public class HomeController {
         return "index";
     }
 
+    @PostMapping("/")
+    public String index(@RequestParam String username, Model model) {
 
-
-    @SneakyThrows
-    @Scheduled(fixedRate = 5000)
-    public void sendNotify(){
-        List<WebSocketSession> sessions = MessageHandler.sessions;
-        for (WebSocketSession session : sessions) {
-            session.sendMessage(new TextMessage("Salom " + session.getRemoteAddress()));
-        }
+        model.addAttribute("username", username);
+        return "index";
     }
+
 }

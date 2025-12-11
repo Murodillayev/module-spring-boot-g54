@@ -1,23 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Oddiy WebSocket Testi</title>
     <meta charset="UTF-8">
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        #status { font-weight: bold; margin-bottom: 10px; }
-        #messages { border: 1px solid #ccc; padding: 10px; min-height: 100px; max-height: 300px; overflow-y: scroll; background-color: #f9f9f9; }
-        .server-msg { color: darkblue; }
-        .client-msg { color: darkgreen; }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #status {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+        }
+
+        .server-msg {
+            color: darkblue;
+        }
+
+        .client-msg {
+            color: darkgreen;
+        }
     </style>
 </head>
 <body>
 
 <h1>WebSocket Testi</h1>
 
+<input id="username" placeholder="input username" required>
+<button onclick="setUsername()">Connect</button>
+
 <div id="status">Ulanish holati: Yopilgan</div>
 
-<input type="text" id="messageInput" placeholder="Yuboriladigan xabar" />
+<input type="text" id="messageInput" placeholder="Yuboriladigan xabar"/>
 <button onclick="sendMessage()">Yuborish</button>
 <button onclick="closeConnection()">Ulanishni uzish</button>
 
@@ -25,90 +49,75 @@
 
 <h2>Xabarlar</h2>
 <div id="messages"></div>
+</th:block>
 
-<script>
-    // 1. WebSocket server manzili
-    // *** Eslatma: Ushbu manzilni o'zingizning haqiqiy WebSocket server manzilingiz bilan almashtiring! ***
-    // Masalan: "ws://localhost:8080/my-websocket" yoki "wss://echo.websocket.org" (test uchun)
-    const socketUrl = "ws://localhost:8080/ws";
 
-    let ws = null;
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script th:inline="javascript">
+
+
+    let stopmClient = null;
+    let socket = null;
+    let username = null;
     const statusDiv = document.getElementById('status');
     const messagesDiv = document.getElementById('messages');
+    const usernameIn = document.getElementById('username');
     const messageInput = document.getElementById('messageInput');
 
-    // Ulanishni ochish funksiyasi
+
+    function setUsername() {
+        console.log(usernameIn.value)
+        username = usernameIn.value;
+    }
+
     function connect() {
+
         try {
-            // Yangi WebSocket obyektini yaratish
-            ws = new WebSocket(socketUrl);
+            socket = new SockJS("/ws");
+            stopmClient = Stomp.over(socket);
             statusDiv.textContent = 'Ulanish holati: Ulanmoqda...';
 
-            // 2. Ulanish ochilganda
-            ws.onopen = function(event) {
+            stopmClient.connect({}, () => {
                 statusDiv.textContent = 'Ulanish holati: **Ochiq** (Serverga ulangan)';
-                addMessage('Tizim', `Serverga muvaffaqiyatli ulanildi: ${socketUrl}`, 'client-msg');
-                // Ulanish ochilgandan so'ng darhol xabar yuborish misoli
-                // ws.send("Salom, server!");
-            };
 
-            // 3. Serverdan xabar kelganda
-            ws.onmessage = function(event) {
-                addMessage('Server', event.data, 'server-msg');
-            };
+                stopmClient.subscribe("/topic/messages", (event) => {
+                    const data = JSON.parse(event.body);
+                    addMessage(data.sender, data.message, data.sendTime)
+                })
 
-            // 4. Xatolik yuz berganda
-            ws.onerror = function(error) {
-                statusDiv.textContent = 'Ulanish holati: **Xatolik**';
-                addMessage('Tizim', `WebSocket xatosi: ${error.message}`, 'server-msg');
-            };
-
-            // 5. Ulanish yopilganda
-            ws.onclose = function(event) {
-                statusDiv.textContent = 'Ulanish holati: **Yopilgan**';
-                addMessage('Tizim', `Ulanish uzildi. Kod: ${event.code}, Sabab: ${event.reason || 'Yo‘q'}`, 'client-msg');
-            };
+            }, (error) => {
+                console.error('Ulanishda xato:', error);
+                document.getElementById('status').textContent = 'Xato ❌';
+                setTimeout(connect, 3000); // 5 soniyadan keyin qayta urinish
+            })
 
         } catch (error) {
             statusDiv.textContent = 'Ulanish holati: **Xatolik**';
-            addMessage('Tizim', `Ulanishni yaratishda xato: ${error.message}`, 'server-msg');
         }
     }
 
     // Xabar yuborish funksiyasi
     function sendMessage() {
         const message = messageInput.value.trim();
-        if (!ws || ws.readyState !== WebSocket.OPEN) {
-            alert("WebSocket ulanishi ochiq emas! Avval ulaning.");
-            return;
-        }
-
         if (message === "") {
             alert("Iltimos, yuboriladigan xabarni kiriting.");
             return;
         }
 
         // Serverga xabar yuborish
-        ws.send(message);
-        addMessage('Men', message, 'client-msg');
+        stopmClient.send('/app/send', {}, JSON.stringify({
+            message: message,
+            sender: username
+        }))
+
         messageInput.value = ''; // Inputni tozalash
     }
 
-    // Ulanishni uzish funksiyasi
-    function closeConnection() {
-        if (ws && ws.readyState === WebSocket.OPEN) {
-            ws.close(1000, "Foydalanuvchi tomonidan uzildi"); // 1000 — normal yopish kodi
-        } else {
-            alert("Ulanish allaqachon yopiq yoki mavjud emas.");
-        }
-    }
-
     // Xabarni ro'yxatga qo'shish yordamchi funksiyasi
-    function addMessage(sender, message, className) {
-        const time = new Date().toLocaleTimeString();
+    function addMessage(sender, message, time) {
         const p = document.createElement('p');
         p.innerHTML = `[${time}] **${sender}:** ${message}`;
-        p.className = className;
         messagesDiv.appendChild(p);
         // Eng oxirgi xabarga o'tish
         messagesDiv.scrollTop = messagesDiv.scrollHeight;

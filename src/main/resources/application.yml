@@ -8,3 +8,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+
+  # Message broker
+
+  # malumotni yaxlitliga
+  # async
+  # masshtablilik (pub/sub)
+
+  # client -> service1 ->  (mb(data))->  service2 (notfy service)
+
+  #

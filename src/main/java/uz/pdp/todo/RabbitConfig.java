@@ -10,7 +10,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue queue() {
-        return new Queue("todo_queue_2", false);
+        return new Queue("todo_queue", false);
     }
 
     @Bean

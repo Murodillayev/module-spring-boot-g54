@@ -1,15 +1,3 @@
-spring:
-  datasource:
-    username: macbookpro
-    password: 19801980
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/todo_app
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-
-
   # Message broker
 
   # malumotni yaxlitliga
@@ -19,3 +7,10 @@ spring:
   # client -> service1 ->  (mb(data))->  service2 (notfy service)
 
   #
+
+  spring:
+    rabbitmq:
+      port: 5672
+      host: localhost
+      username: guest
+      password: guest
